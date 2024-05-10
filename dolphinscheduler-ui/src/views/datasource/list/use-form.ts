@@ -245,7 +245,7 @@ export function useForm(id?: number) {
     state.detailForm.port = options.previousPort || options.defaultPort
     state.detailForm.type = type
 
-    state.requiredDataBase = type !== 'POSTGRESQL' && type !== 'ATHENA'
+    state.requiredDataBase = type !== 'POSTGRESQL' && type !== 'ATHENA' && type !== 'DOLPHINDB'
 
     state.showHost = type !== 'ATHENA'
     state.showPort = type !== 'ATHENA'
@@ -458,7 +458,12 @@ export const datasourceType: IDataBaseOptionKeys = {
     value: 'K8S',
     label: 'K8S',
     defaultPort: 6443
-  }
+  },
+  DOLPHINDB: {
+      value: 'DOLPHINDB',
+      label: 'DOLPHINDB',
+      defaultPort: 8848
+    }
 }
 
 export const datasourceTypeList: IDataBaseOption[] = Object.values(
