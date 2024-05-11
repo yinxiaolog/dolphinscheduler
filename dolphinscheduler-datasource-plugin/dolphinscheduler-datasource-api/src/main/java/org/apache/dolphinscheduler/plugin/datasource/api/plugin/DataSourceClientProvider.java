@@ -85,6 +85,9 @@ public class DataSourceClientProvider {
     public static AdHocDataSourceClient getAdHocDataSourceClient(DbType dbType, ConnectionParam connectionParam) {
         BaseConnectionParam baseConnectionParam = (BaseConnectionParam) connectionParam;
         Map<String, DataSourceChannel> dataSourceChannelMap = dataSourcePluginManager.getDataSourceChannelMap();
+        for (Map.Entry<String, DataSourceChannel> kv : dataSourceChannelMap.entrySet()) {
+            log.error("datasource={}, channel={}", kv.getKey(), kv.getValue());
+        }
         DataSourceChannel dataSourceChannel = dataSourceChannelMap.get(dbType.getName());
         if (null == dataSourceChannel) {
             throw new RuntimeException(String.format("datasource plugin '%s' is not found", dbType.getName()));

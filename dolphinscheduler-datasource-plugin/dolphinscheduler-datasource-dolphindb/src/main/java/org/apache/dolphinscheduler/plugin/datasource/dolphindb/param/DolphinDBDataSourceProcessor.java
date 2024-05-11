@@ -35,10 +35,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.google.auto.service.AutoService;
 
+@Slf4j
 @AutoService(DataSourceProcessor.class)
 public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
+
+    @Override
+    public void checkDatasourceParam(BaseDataSourceParamDTO baseDataSourceParamDTO) {
+        if (!baseDataSourceParamDTO.getType().equals(DbType.REDSHIFT)) {
+            // due to redshift use not regular hosts
+            checkHost(baseDataSourceParamDTO.getHost());
+        }
+        log.error("database={}", baseDataSourceParamDTO.getDatabase());
+        checkOther(baseDataSourceParamDTO.getOther());
+    }
 
     @Override
     public BaseDataSourceParamDTO castDatasourceParamDTO(String paramJson) {
@@ -67,7 +80,7 @@ public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
         DolphinDBDataSourceParamDTO dolphinDBParam = (DolphinDBDataSourceParamDTO) datasourceParam;
         String address = String.format("%s%s:%s", DataSourceConstants.JDBC_DOLPHINDB, dolphinDBParam.getHost(),
                 dolphinDBParam.getPort());
-        String jdbcUrl = String.format("%s/%s", address, dolphinDBParam.getDatabase());
+        String jdbcUrl = String.format("%s", address);
 
         DolphinDBConnectionParam dolphinDBConnectionParam = new DolphinDBConnectionParam();
         dolphinDBConnectionParam.setJdbcUrl(jdbcUrl);
@@ -100,16 +113,20 @@ public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
     @Override
     public String getJdbcUrl(ConnectionParam connectionParam) {
         DolphinDBConnectionParam dolphinDBConnectionParam = (DolphinDBConnectionParam) connectionParam;
+        log.info("{jdbcUrl={}", dolphinDBConnectionParam.getJdbcUrl());
         if (MapUtils.isNotEmpty(dolphinDBConnectionParam.getOther())) {
             return String.format("%s?%s", dolphinDBConnectionParam.getJdbcUrl(),
                     transformOther(dolphinDBConnectionParam.getOther()));
         }
+        log.error("{jdbcUrl={}", dolphinDBConnectionParam.getJdbcUrl());
         return dolphinDBConnectionParam.getJdbcUrl();
     }
 
     @Override
     public Connection getConnection(ConnectionParam connectionParam) throws ClassNotFoundException, SQLException {
         DolphinDBConnectionParam dolphinDBConnectionParam = (DolphinDBConnectionParam) connectionParam;
+        log.info("ddb conn param:{}", dolphinDBConnectionParam);
+        System.out.println(dolphinDBConnectionParam);
         Class.forName(getDatasourceDriver());
         return DriverManager.getConnection(getJdbcUrl(connectionParam),
                 dolphinDBConnectionParam.getUser(),
