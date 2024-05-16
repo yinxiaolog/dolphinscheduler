@@ -50,7 +50,6 @@ public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
             // due to redshift use not regular hosts
             checkHost(baseDataSourceParamDTO.getHost());
         }
-        log.error("database={}", baseDataSourceParamDTO.getDatabase());
         checkOther(baseDataSourceParamDTO.getOther());
     }
 
