@@ -24,9 +24,10 @@ import org.apache.dolphinscheduler.plugin.datasource.api.datasource.AbstractData
 import org.apache.dolphinscheduler.plugin.datasource.api.datasource.BaseDataSourceParamDTO;
 import org.apache.dolphinscheduler.plugin.datasource.api.datasource.DataSourceProcessor;
 import org.apache.dolphinscheduler.plugin.datasource.api.utils.PasswordUtils;
-import org.apache.dolphinscheduler.plugin.task.api.utils.MapUtils;
 import org.apache.dolphinscheduler.spi.datasource.ConnectionParam;
 import org.apache.dolphinscheduler.spi.enums.DbType;
+
+import org.apache.commons.collections4.MapUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -113,12 +114,10 @@ public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
     @Override
     public String getJdbcUrl(ConnectionParam connectionParam) {
         DolphinDBConnectionParam dolphinDBConnectionParam = (DolphinDBConnectionParam) connectionParam;
-        log.info("{jdbcUrl={}", dolphinDBConnectionParam.getJdbcUrl());
         if (MapUtils.isNotEmpty(dolphinDBConnectionParam.getOther())) {
             return String.format("%s?%s", dolphinDBConnectionParam.getJdbcUrl(),
                     transformOther(dolphinDBConnectionParam.getOther()));
         }
-        log.error("{jdbcUrl={}", dolphinDBConnectionParam.getJdbcUrl());
         return dolphinDBConnectionParam.getJdbcUrl();
     }
 
@@ -126,7 +125,6 @@ public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
     public Connection getConnection(ConnectionParam connectionParam) throws ClassNotFoundException, SQLException {
         DolphinDBConnectionParam dolphinDBConnectionParam = (DolphinDBConnectionParam) connectionParam;
         log.info("ddb conn param:{}", dolphinDBConnectionParam);
-        System.out.println(dolphinDBConnectionParam);
         Class.forName(getDatasourceDriver());
         return DriverManager.getConnection(getJdbcUrl(connectionParam),
                 dolphinDBConnectionParam.getUser(),
@@ -144,11 +142,12 @@ public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
     }
 
     private String transformOther(Map<String, String> otherMap) {
-        if (org.apache.commons.collections4.MapUtils.isEmpty(otherMap)) {
+        if (MapUtils.isEmpty(otherMap)) {
             return null;
         }
-        List<String> list = new ArrayList<>();
+
+        List<String> list = new ArrayList<>(otherMap.size());
         otherMap.forEach((key, value) -> list.add(String.format("%s=%s", key, value)));
-        return String.join(";", list);
+        return String.join("&", list);
     }
 }
