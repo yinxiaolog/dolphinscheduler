@@ -36,11 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
-
 import com.google.auto.service.AutoService;
 
-@Slf4j
 @AutoService(DataSourceProcessor.class)
 public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
 
@@ -123,7 +120,6 @@ public class DolphinDBDataSourceProcessor extends AbstractDataSourceProcessor {
     @Override
     public Connection getConnection(ConnectionParam connectionParam) throws ClassNotFoundException, SQLException {
         DolphinDBConnectionParam dolphinDBConnectionParam = (DolphinDBConnectionParam) connectionParam;
-        log.info("ddb conn param:{}", dolphinDBConnectionParam);
         Class.forName(getDatasourceDriver());
         return DriverManager.getConnection(getJdbcUrl(connectionParam),
                 dolphinDBConnectionParam.getUser(),

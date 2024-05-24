@@ -29,7 +29,6 @@ public class DolphinDBDataSourceParamDTO extends BaseDataSourceParamDTO {
                 + ", note='" + note + '\''
                 + ", host='" + host + '\''
                 + ", port=" + port
-                + ", database='" + database + '\''
                 + ", userName='" + userName + '\''
                 + ", password='" + password + '\''
                 + ", other='" + other + '\''

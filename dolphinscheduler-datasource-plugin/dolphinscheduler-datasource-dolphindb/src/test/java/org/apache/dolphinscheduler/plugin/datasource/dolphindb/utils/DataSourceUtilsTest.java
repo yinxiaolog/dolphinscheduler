@@ -48,7 +48,6 @@ public class DataSourceUtilsTest {
     public void testCheckDatasourceParam() {
         DolphinDBDataSourceParamDTO paramDTO = new DolphinDBDataSourceParamDTO();
         paramDTO.setHost("localhost");
-        paramDTO.setDatabase("default");
         Map<String, String> other = new HashMap<>();
         other.put("serverTimezone", "Asia/Shanghai");
         other.put("queryTimeout", "-1");
@@ -62,7 +61,6 @@ public class DataSourceUtilsTest {
     public void testBuildConnectionParams() {
         DolphinDBDataSourceParamDTO paramDTO = new DolphinDBDataSourceParamDTO();
         paramDTO.setHost("localhost");
-        paramDTO.setDatabase("default");
         paramDTO.setUserName("admin");
         paramDTO.setPort(8848);
         paramDTO.setPassword("123456");
@@ -82,7 +80,6 @@ public class DataSourceUtilsTest {
     public void testBuildConnectionParams2() {
         DolphinDBDataSourceParamDTO paramDTO = new DolphinDBDataSourceParamDTO();
         paramDTO.setHost("localhost");
-        paramDTO.setDatabase("default");
         paramDTO.setUserName("root");
         paramDTO.setPort(5433);
         paramDTO.setPassword("123456");

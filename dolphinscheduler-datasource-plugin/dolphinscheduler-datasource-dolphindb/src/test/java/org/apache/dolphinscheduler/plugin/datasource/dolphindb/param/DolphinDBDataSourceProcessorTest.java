@@ -45,14 +45,13 @@ class DolphinDBDataSourceProcessorTest {
         dolphinDBDataSourceParamDTO.setPassword("123456");
         dolphinDBDataSourceParamDTO.setHost("localhost");
         dolphinDBDataSourceParamDTO.setPort(8848);
-        dolphinDBDataSourceParamDTO.setDatabase("default");
         dolphinDBDataSourceParamDTO.setOther(props);
         try (MockedStatic<PasswordUtils> mockedStaticPasswordUtils = Mockito.mockStatic(PasswordUtils.class)) {
             mockedStaticPasswordUtils.when(() -> PasswordUtils.encodePassword(Mockito.anyString())).thenReturn("test");
             DolphinDBConnectionParam connectionParams = (DolphinDBConnectionParam) processor
                     .createConnectionParams(dolphinDBDataSourceParamDTO);
             Assertions.assertEquals("jdbc:dolphindb://localhost:8848", connectionParams.getAddress());
-            Assertions.assertEquals("jdbc:dolphindb://localhost:8848/default", connectionParams.getJdbcUrl());
+            Assertions.assertEquals("jdbc:dolphindb://localhost:8848", connectionParams.getJdbcUrl());
         }
     }
 
@@ -60,7 +59,7 @@ class DolphinDBDataSourceProcessorTest {
     public void testCreateConnectionParams2() {
         String connectionJson =
                 "{\"user\":\"admin\",\"password\":\"123456\",\"address\":\"jdbc:dolphindb://localhost:8848\""
-                        + ",\"database\":\"default\",\"jdbcUrl\":\"jdbc:dolphindb://localhost:8848/default\"}";
+                        + ",\"jdbcUrl\":\"jdbc:dolphindb://localhost:8848/default\"}";
         DolphinDBConnectionParam connectionParams = (DolphinDBConnectionParam) processor
                 .createConnectionParams(connectionJson);
         Assertions.assertNotNull(connectionJson);
@@ -76,9 +75,9 @@ class DolphinDBDataSourceProcessorTest {
     @Test
     public void testGetJdbcUrl() {
         DolphinDBConnectionParam param = new DolphinDBConnectionParam();
-        param.setJdbcUrl("jdbc:dolphindb://localhost:8848/default");
+        param.setJdbcUrl("jdbc:dolphindb://localhost:8848");
         Assertions.assertEquals(
-                "jdbc:dolphindb://localhost:8848/default",
+                "jdbc:dolphindb://localhost:8848",
                 processor.getJdbcUrl(param));
     }
 
@@ -96,12 +95,12 @@ class DolphinDBDataSourceProcessorTest {
     @Test
     public void testGetDatasourceUniqueId() {
         DolphinDBConnectionParam param = new DolphinDBConnectionParam();
-        param.setJdbcUrl("jdbc:dolphindb://localhost:8848/default");
+        param.setJdbcUrl("jdbc:dolphindb://localhost:8848/");
         param.setUser("admin");
         param.setPassword("123456");
         try (MockedStatic<PasswordUtils> mockedPasswordUtils = Mockito.mockStatic(PasswordUtils.class)) {
             mockedPasswordUtils.when(() -> PasswordUtils.encodePassword(Mockito.anyString())).thenReturn("123456");
-            Assertions.assertEquals("dolphindb@admin@123456@jdbc:dolphindb://localhost:8848/default",
+            Assertions.assertEquals("dolphindb@admin@123456@jdbc:dolphindb://localhost:8848/",
                     processor.getDatasourceUniqueId(param, DbType.DOLPHINDB));
         }
     }

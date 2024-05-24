@@ -1,6 +1,6 @@
 # DolphinDB
 
-![dolphindb](../../../../img/new_ui/dev/datasource/dolphindb.png)
+![dolphindb](../../../../img/new_ui/dev/datasource/dolphindb-en.png)
 
 ## Datasource Parameters
 
@@ -13,7 +13,6 @@
 | Port                       | Enter the DolphinDB service port.                            |
 | Username                   | Set the username for DolphinDB connection.                   |
 | Password                   | Set the password for DolphinDB connection.                   |
-| Database name              | Enter the database name of the DolphinDB connection.         |
 | Jdbc connection parameters | Parameter settings for DolphinDB connection, in JSON format. |
 
 ## Native Supported

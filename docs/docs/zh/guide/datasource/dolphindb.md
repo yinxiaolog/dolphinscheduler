@@ -1,6 +1,6 @@
 # DOLPHINDB 数据源
 
-![dolphindb](../../../../img/new_ui/dev/datasource/dolphindb.png)
+![dolphindb](../../../../img/new_ui/dev/datasource/dolphindb-zh.png)
 
 | **参数名称**  |             **参数描述**             |
 |-----------|----------------------------------|
@@ -11,7 +11,6 @@
 | 端口        | 输入连接 DOLPHINDB 的端口               |
 | 用户名       | 设置连接 DOLPHINDB 的用户名              |
 | 密码        | 设置连接 DOLPHINDB 的密码               |
-| 数据库名      | 输入连接 DOLPHINDB 的数据库名称            |
 | JDBC 连接参数 | 用于 DOLPHINDB 连接的参数设置，以 JSON 形式填写 |
 
 ## 是否原生支持
